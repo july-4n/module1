@@ -67,14 +67,7 @@
           Вы: ${playerAnswer.toLocaleLowerCase()},
           Ваш ход первый!
         `);
-      } else if (
-        // eslint-disable-next-line max-len
-        (computerAnswer === FIGURES[0] && playerAnswer.toLocaleLowerCase() === FIGURES[1]) ||
-        // eslint-disable-next-line max-len
-        (computerAnswer === FIGURES[2] && playerAnswer.toLocaleLowerCase() === FIGURES[0]) ||
-        // eslint-disable-next-line max-len
-        (computerAnswer === FIGURES[1] && playerAnswer.toLocaleLowerCase() === FIGURES[2])
-      ) {
+      } else {
         alert(`
           Компьютер: ${computerAnswer},
           Вы: ${playerAnswer.toLocaleLowerCase()},
@@ -85,6 +78,17 @@
     };
 
     return function start() {
+      const resetGame = () => {
+        computerFirst = false;
+        checkFlag = true;
+        gameStart = true;
+        result = {
+          player: 5,
+          computer: 5,
+        };
+        start();
+      };
+
       if (gameStart === true) {
         getFirstMove();
       }
@@ -97,17 +101,8 @@
           const question = confirm(`
             Вы выиграли! Хотите сыграть ещё?
           `);
-          if (question !== true) {
-            return;
-          } else {
-            computerFirst = false;
-            checkFlag = true;
-            gameStart = true;
-            result = {
-              player: 5,
-              computer: 5,
-            };
-            start();
+          if (question) {
+            resetGame();
           }
         } else if (result.player <= 0) {
           result.player = 0;
@@ -116,17 +111,8 @@
           const question = confirm(`
             Компьютер выиграл! Хотите сыграть ещё?
           `);
-          if (question !== true) {
-            return;
-          } else {
-            computerFirst = false;
-            checkFlag = true;
-            gameStart = true;
-            result = {
-              player: 5,
-              computer: 5,
-            };
-            start();
+          if (question) {
+            resetGame();
           }
         } else {
           message();
